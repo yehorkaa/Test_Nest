@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  api:
+    container_name: api
+    restart: on-failure
+    depends_on:
+      - postgres
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.docker
+
+  postgres:
+    container_name: db
+    image: postgres:latest
+    restart: always
+    env_file:
+      - .env.docker
+    volumes:
+      - ./postgres-db:/data/postgres
+    ports:
+      - "5432:5432"
